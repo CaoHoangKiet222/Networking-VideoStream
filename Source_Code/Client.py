@@ -102,6 +102,7 @@ class Client:
 	
 	def listenRtp(self):		
 		"""Listen for RTP packets."""
+		print(self.rtpSocket)
 		while True:
 			try:
 				print("LISTENING...")
@@ -168,7 +169,7 @@ class Client:
 			request = "%s %s %s" % (self.SETUP_STR,self.fileName,self.RTSP_VER)
 			request+="\nCSeq: %d" % self.rtspSeq
 			request+="\nTransport: %s; client_port= %d" % (self.TRANSPORT,self.rtpPort)
-			
+		    
 			# Keep track of the sent request.
 			self.requestSent = self.SETUP
 			
@@ -238,7 +239,7 @@ class Client:
 	def parseRtspReply(self, data):
 		"""Parse the RTSP reply from the server."""
 		lines = data.split('\n')
-		seqNum = int(lines[1].split(' ')[1])
+		seqNum = int(lines[1].split(' ')[1]) # Get 200
 		
 		# Process only if the server reply's sequence number is the same as the request's
 		if seqNum == self.rtspSeq:
@@ -255,6 +256,7 @@ class Client:
 						# TO COMPLETE
 						#-------------
                         
+                        # print(lines[0].split(' ')[0] + ' ' + lines[0].split(' ')[1] + ' ' + lines[0].split(' ')[2])
                         
 						# Update RTSP state.
 						self.state = self.READY
